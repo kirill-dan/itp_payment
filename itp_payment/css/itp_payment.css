@@ -1,0 +1,187 @@
+/*---------------------------------------- Vertical Tabs -------------------------------*/
+
+.vertical-tabs .form-type-textfield input {
+    width: auto;
+}
+
+/*---------------------------------------- Fields on the form settings -------------------------------*/
+
+.itp-payment-field {
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#itp-payment-fieldset .fieldset-legend {
+    text-transform: none;
+}
+
+#itp-payment-fieldset .fieldset-active {
+    color: #dd1822;
+}
+
+.view-itp-processor-form .itp-payment-amount {
+    padding-left: 10px;
+}
+
+.view-itp-processor-form .itp-payment-amount .itp-payment-price-text {
+    font-weight: bold;
+    padding-right: 5px;
+}
+
+.view-itp-processor-form .itp-payment-amount .itp-payment-price {
+    color: #dd1822;
+}
+
+.view-itp-processor-form .itp-payment-amount .itp-payment-price-currency {
+    font-weight: bold;
+}
+
+.view-itp-processor-form {
+    position: relative;
+    border: 1px solid #DDD;
+    box-shadow: 0px 3px 6px 0px #888;
+    padding: 5px;
+}
+
+.view-itp-processor-form-edit {
+    padding: 10px;
+    border: 1px solid #dd1822;
+    border-radius: 8px 8px 8px 8px;
+}
+
+#itp-payment-block {
+
+}
+
+.payments-title-report {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.itp-color_status {
+    color: #dd1822;
+    font-weight: bold;
+}
+
+.payments-title-xls-button {
+    text-align: right;
+}
+
+.itp-payment-select-days {
+    padding-left: 10px;
+}
+
+.itp-payment-report-user-info {
+    padding-left: 10px;
+    padding-top: 5px;
+    display: none;
+    position: absolute;
+    background: white;
+    top: 0;
+    left: 60px;
+    float: right;
+    width: 400px;
+    height: 300px;
+    border: 1px solid gray;
+    z-index: 100;
+}
+
+.itp-payment-report-user {
+    float: left;
+    position: relative;
+}
+
+.itp-payment-report-user:hover .itp-payment-report-user-info {
+    display: block !important;
+}
+
+.itp-payment-button {
+    text-align: right;
+}
+
+.itp-payment-button-table input.form-submit {
+    color: #FFF;
+    background: #459E18 none repeat scroll 0 0;
+    cursor: pointer;
+    border-radius: 0;
+    padding: 3px;
+    margin: 0;
+}
+
+.itp-payment-button-table {
+    cursor: pointer;
+}
+
+.itp-payment-button-table a {
+    background: #459E18 none repeat scroll 0 0;
+    border-bottom: medium none;
+    display: inline-block;
+    color: #FFF;
+    padding: 3px 5px 3px 5px;
+    text-decoration: none;
+}
+
+.itp-payment-button-table a:hover {
+    text-decoration: none;
+}
+
+.itp-payment-ajax-button-table input.form-submit {
+    color: #FFF;
+    background: #459E18 none repeat scroll 0 0;
+    cursor: pointer;
+    border-radius: 0;
+    padding: 3px;
+}
+
+.itp-payment-submit {
+    vertical-align: bottom;
+    margin-bottom: 28px;
+}
+
+.itp-payment-field-date .form-item {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.itp-payment-name-payment {
+    background: #F00000;
+    color: #ffffff;
+    padding-left: 3px;
+    font-weight: bold;
+}
+
+.itp-payment-info {
+    height: 35px;
+    width: 35px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+#close-dialog-box {
+    text-align: center;
+    margin-top: 10px;
+    position: absolute;
+    bottom: 10px;
+    left: 47%;
+}
+
+div.ctools-modal-content a.close img {
+    display: none;
+}
+
+.itp-payment-close-dialog-box {
+    margin-right: 10px;
+    float: left;
+}
+
+.itp-payment-confirm-button {
+    margin-left: 25%;
+}
+
+.itp-payment-confirm-text {
+    text-align: left;
+    margin-bottom: 35px;
+    margin-left: 10px;
+}

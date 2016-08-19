@@ -1,0 +1,26 @@
+<?php
+/**
+ *  Create new install entry in table for payment processor PayPal.
+ */
+
+function itp_payment_processor_paypal_install() {
+  // Install to itp_payment_processors table.
+  $processor['install'] = array(
+    'name_processor' => 'PayPal',
+    'title' => 'PayPal payment processor',
+    'controller' => 'PayPal_Controller',
+    'callback_url' => 'paypal/get-respond',
+    'callback_url_thanks' => 'paypal/thanks',
+  );
+
+  //Install default data to itp_payment_processors_settings table.
+  $processor['default_data'] = array(
+    'pay_type' => array(
+      'express' => 'Express Checkout',
+    ),
+    'version' => 109,
+    'site_url' => 'https://api-3t.paypal.com/nvp',
+    'sandbox_url' => 'https://api-3t.sandbox.paypal.com/nvp',
+  );
+  return $processor;
+}

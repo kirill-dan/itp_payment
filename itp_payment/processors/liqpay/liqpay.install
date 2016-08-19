@@ -1,0 +1,27 @@
+<?php
+/**
+ *  Create new install entry in table for payment processor PayPal.
+ */
+
+function itp_payment_processor_liqpay_install() {
+  // Install to itp_payment_processors table.
+  $processor['install'] = array(
+    'name_processor' => 'LiqPay',
+    'title' => 'LiqPay payment processor',
+    'controller' => 'liqpay_controller',
+    'callback_url' => 'liqpay/get-respond',
+    'callback_url_thanks' => 'liqpay/thanks',
+  );
+
+  //Install default data to itp_payment_processors_settings table.
+  $processor['default_data'] = array(
+    'pay_type' => array(
+      'express' => 'Liq&Buy',
+//      'card' => 'Payment credit card',
+    ),
+    'version' => 3.0,
+    'site_url' => 'https://www.liqpay.com/api/checkout',
+    'sandbox_url' => 'https://www.liqpay.com/api/checkout',
+  );
+  return $processor;
+}

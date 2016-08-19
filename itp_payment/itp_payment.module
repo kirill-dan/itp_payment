@@ -1,0 +1,554 @@
+<?php
+
+/**
+ * Module for create payment via different payment processors
+ * Developer: Danilevsky Kirill k.danilevsky@gmail.com
+ * web: http://best-house.org
+ */
+
+/**
+ * Implementation of hook_help.
+ *
+ */
+function itp_payment_help($patch, $arg) {
+  switch ($patch) {
+    case 'admin/help#itp-payment' :
+      return t('Module for create payment via different payment processors. Developer Danilevsky Kirill http://best-house.org');
+      break;
+  }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function itp_payment_permission() {
+  return array(
+    'payment admin' => array(
+      'title' => t('Payment admin'),
+      'description' => t('Permission for control of the payment processors'),
+    ),
+  );
+}
+
+/**
+ * Implementation of hook_menu.
+ *
+ */
+function itp_payment_menu() {
+  $items = array();
+  // Adding new item in admin menu (payment system).
+  $items['admin/itp-payment'] = array(
+    'title' => t('Payment processors'),
+    'description' => t('Edit settings for different payment processors'),
+    'weight' => 10,
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('access administration pages'),
+    'file path' => drupal_get_path('module', 'system'),
+    'file' => 'system.admin.inc',
+  );
+  // Adding new item in admin menu (settings payment system).
+  $items['admin/itp-payment/settings'] = array(
+    'title' => t('Settings'),
+    'description' => t('Edit settings for different payment processors'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('itp_payment_admin_form_payment_settings'),
+    'access arguments' => array('payment admin'),
+    'file' => 'itp_payment.admin.inc',
+  );
+  // Add callback for payment actions.
+  $items['payment/%/%'] = array(
+    'title callback' => 'itp_payment_menu_processor_title',
+    'title arguments' => array(1, 2),
+    'page callback' => 'itp_payment_menu_processor',
+    'page arguments' => array(1, 2),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  // Adding new item in admin menu (report payments).
+  $items['admin/itp-payment/report'] = array(
+    'title' => t('Report payments'),
+    'description' => t('Information about payments'),
+    'page callback' => array('itp_payment_report_page'),
+    'access arguments' => array('payment admin'),
+    'file' => 'itp_payment.report.inc',
+  );
+  // Adding new item in admin menu (thanks text).
+  $items['admin/itp-payment/thanks'] = array(
+    'title' => t('Thanks text'),
+    'description' => t('Edit thanks text'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('itp_payment_form_thanks_text'),
+    'access arguments' => array('payment admin'),
+    'file' => 'itp_payment.admin.inc',
+  );
+  // Adding new item in admin menu (info text).
+  $items['admin/itp-payment/info'] = array(
+    'title' => t('Info text'),
+    'description' => t('Edit info text'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('itp_payment_admin_page_info_text'),
+    'access arguments' => array('payment admin'),
+    'file' => 'itp_payment.admin.inc',
+  );
+  // Add callback for info test.
+  $items['payment/%ctools_js/info/%'] = array(
+    'title' => t('Information about payment'),
+    'page callback' => 'itp_payment_show_info_text',
+    'page arguments' => array(3, 1),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  // Add callback for delete order.
+  $items['admin/itp-payment/report/%ctools_js/delete/%'] = array(
+    'title' => t('Delete order'),
+    'page callback' => 'itp_payment_confirm_delete',
+    'page arguments' => array(5, 3),
+    'access arguments' => array('payment admin'),
+    'type' => MENU_CALLBACK,
+    'file' => 'itp_payment.report.inc',
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_init().
+ */
+function itp_payment_init() {
+
+  // Include css file.
+  drupal_add_css(drupal_get_path('module', 'itp_payment') . '/css/itp_payment.css');
+
+  // Include the CTools tools that we need.
+  ctools_include('ajax');
+  ctools_include('modal');
+
+  // Add CTools' javascript to the page.
+  ctools_modal_add_js();
+
+  $js_settings = array(
+    'modal-popup-small-size' => array(
+      'modalSize' => array(
+        'type' => 'fixed',
+        'width' => 300,
+        'height' => 150,
+      ),
+      'modalOptions' => array(
+        'opacity' => 0.85,
+        'background' => '#000',
+      ),
+      'animation' => 'fadeIn',
+      'closeText' => t('Close'),
+    ),
+    'modal-popup-dynamic' => array(
+      'modalSize' => array(
+        'type' => 'fixed',
+        'width' => 800,
+        'height' => 600,
+      ),
+      'modalOptions' => array(
+        'opacity' => 0.85,
+        'background' => '#000',
+      ),
+      'animation' => 'fadeIn',
+      'closeText' => t('Close'),
+    ),
+  );
+
+  // Include settings theme.
+  drupal_add_js($js_settings, 'setting');
+}
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function itp_payment_preprocess_node(&$variables) {
+
+  global $user;
+  $uid = $user->uid;
+
+  $type_node = $variables['type'];
+  $nid = $variables['nid'];
+  $node_author = $variables['uid'];
+
+  // Check need whether output data for a payment.
+  $content_type = itp_payment_check_content_type();
+
+  // If exist content type and not guest user.
+  if (!empty($content_type) && !empty($uid)) {
+    foreach ($content_type as $value) {
+      if ($value->content_type == $type_node) {
+        // Get payment form.
+        $payment_form = itp_payment_include_processor_form($nid, $node_author, $value);
+        if (!empty($payment_form)) {
+          $variables['content']['itp_payment_form'] = $payment_form;
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Include payment processor form.
+ *
+ * @param $nid integer node nid
+ * @param $node_author integer uid author node
+ * @param $value object data payment settings
+ *
+ * @return array|string payment form data
+ */
+function itp_payment_include_processor_form($nid, $node_author, $value) {
+
+  global $user;
+  $uid = $user->uid;
+
+  // Get data from table Price (if exist).
+  $node_price_info = itp_payment_get_price($nid, $value->amount);
+
+  // If payer - user, he must have price and active = 1. If payer author - price take from payment settings.
+  if ((!empty($node_price_info['price']) && $node_price_info['active'] && $value->payer == 'user') ||
+    $value->payer == 'author'
+  ) {
+    // Check included controller early or no.
+    // Include payment processor only once.
+    if (!isset($controller_exist[$value->idp])) {
+      // Search payment processor controller (name and path).
+      $controller = itp_payment_search_controller($value->idp);
+      // Include payment processor controller to a full node.
+      if (module_load_include('php', 'itp_payment', $controller['path'])) {
+
+        $controller_data = $value;
+        $controller_data->callback_url = $controller['callback_url'];
+        $controller_data->callback_url_thanks = $controller['callback_url_thanks'];
+        $controller_exist[$value->idp] = TRUE;
+        $controller_name = $controller['name'];
+        // If must will pay user.
+        if ($value->payer == 'user') {
+          $controller_data->amount = $node_price_info['price'];
+          // Create new object.
+          $payment = new $controller_name;
+          $payment->constructor($uid, $nid, $controller_data);
+          // Check data and output form.
+          $form_processor = $payment->ViewProcessorForm();
+        } // If must will pay author.
+        elseif ($value->payer == 'author' && $uid == $node_author) {
+          // Create new object.
+          $payment = new $controller_name;
+          $payment->constructor($uid, $nid, $controller_data);
+          // Check data and output form.
+          $form_processor = $payment->ViewProcessorForm();
+        }
+
+        /**
+         * Button Submit must have name="submit_itp_payment" (type="submit" or type="image").
+         * Hidden input must have name="itp_payment_method" and have value="METHOD" where METHOD = case in method CheckSubmitButton
+         * If exist Select must have name="itp-payment-days"
+         */
+
+        // If user clicked on payment image button or button form.
+        // Only button form!
+        if (isset($_POST['submit_itp_payment']) || isset($_POST['submit_itp_payment_x'])) {
+          // If exist days select item on the form.
+          if (isset($_POST['itp-payment-days'])) {
+            $days = $_POST['itp-payment-days'];
+          }
+          else {
+            $days = '';
+          }
+
+          // Call method for pay.
+          $payment->CheckSubmitButton($_POST['itp_payment_method'], $days);
+        }
+
+        if (!empty($form_processor)) {
+          return array(
+            '#markup' => $form_processor,
+            '#weight' => 500,
+            '#prefix' => '<div id="itp-payment-block">',
+            '#suffix' => '</div>',
+          );
+        }
+        else {
+          return '';
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Get all content type for which need output payments.
+ *
+ * @return array content type.
+ */
+function itp_payment_check_content_type() {
+  // Get type from DB.
+  $query = db_select('itp_payment_processors_settings', 'p')
+    ->fields('p')
+    ->condition('p.active', 1)
+    ->execute();
+  if ($query) {
+    foreach ($query as $value) {
+      $type[] = $value;
+    }
+  }
+  if (isset($type)) {
+    return $type;
+  }
+  else {
+    return '';
+  }
+}
+
+/**
+ * Get controller name with path.
+ *
+ * @param $idp integer ID payment processor
+ *
+ * @return array controller name with path
+ */
+function itp_payment_search_controller($idp) {
+  $processor = db_select('itp_payment_processors', 'p')
+    ->fields('p')
+    ->condition('p.idp', $idp)
+    ->execute()
+    ->fetchObject();
+  if ($processor) {
+    $name_processor = strtolower($processor->name_processor);
+    $controller['name'] = $processor->controller;
+    $controller['path'] = 'processors/' . $name_processor . '/' . strtolower($controller['name']);
+    $controller['callback_url'] = $processor->callback_url;
+    $controller['callback_url_thanks'] = $processor->callback_url_thanks;
+    return $controller;
+  }
+  return '';
+}
+
+/**
+ * Router menu for payment processors.
+ *
+ * @param $type_processor string name payment processor
+ * @param $operation string type operation
+ *
+ * @return string for page
+ */
+function itp_payment_menu_processor($type_processor, $operation) {
+  // Get ID payment processor from name.
+  $processor = db_select('itp_payment_processors', 'p')
+    ->fields('p')
+    ->condition('p.name_processor', $type_processor)
+    ->execute()->fetchObject();
+  // If exist processor.
+  if (isset($processor->idp)) {
+    $callback_url = $processor->callback_url;
+    $callback_url_thanks = $processor->callback_url_thanks;
+    // Search payment processor controller (name and path).
+    $controller = itp_payment_search_controller($processor->idp);
+    // Include payment processor controller to a full node.
+    if (module_load_include('php', 'itp_payment', $controller['path'])) {
+      // Create new object for action (Change status in table Report and show thanks text).
+      $controller_name = $controller['name'];
+      // Create new object.
+      $action = new $controller_name;
+      // Get type action.
+      if ($callback_url == $type_processor . '/' . $operation) {
+        $uri = request_uri();
+
+        // Get data from URI (if they exist) from GET respond.
+        if (strpos($uri, '?')) {
+          list($path, $data) = explode('?', $uri);
+        }
+        else {
+          // If exist POST respond.
+          if (isset($_POST)) {
+            $data = $_POST;
+          }
+          else {
+            $data = '';
+          }
+        }
+        // Call method processing respond.
+        $action->GetPaymentSystemRespond($data);
+      }
+      elseif ($callback_url_thanks == $type_processor . '/' . $operation) {
+        // Get from base thanks text.
+        $thanks_text = $action->GetThanksText();
+        return $thanks_text;
+      }
+    }
+  }
+  return '';
+}
+
+/**
+ * Generate dynamic title for payment page.
+ *
+ * @param $type_processor string name payment processor
+ * @param $operation string type operation
+ *
+ * @return string title for page
+ */
+function itp_payment_menu_processor_title($type_processor, $operation) {
+  $title = '';
+  // Get ID payment processor from name.
+  $processor = db_select('itp_payment_processors', 'p')
+    ->fields('p')
+    ->condition('p.name_processor', $type_processor)
+    ->execute()->fetchObject();
+  // If exist processor.
+  if (isset($processor->idp)) {
+    $callback_url = $processor->callback_url;
+    $callback_url_thanks = $processor->callback_url_thanks;
+    // Get type action.
+    if ($callback_url_thanks == $type_processor . '/' . $operation) {
+      $title = t('Thank you for your payment.');
+    }
+  }
+  return $title;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function itp_payment_form_alter(&$form, &$form_state, $form_id) {
+  // Get list content types from payments.
+  if ($content_type = itp_payment_check_content_type()) {
+    foreach ($content_type as $value) {
+      // If content type the same and this is edit node.
+      if ($value->content_type . '_node_form' == $form_id && $form['nid']['#value'] != '') {
+        // Check included whether fields for form early or no.
+        // Add fields only once.
+        if (!isset($add_fields[$value->idp])) {
+          // Add fields if payer only user.
+          if ($value->payer == 'user') {
+            $nid = $form['nid']['#value'];
+
+            // Get data from table.
+            $payment_data = itp_payment_get_price($nid, $value->amount);
+            $price = $payment_data['price'];
+            $active = $payment_data['active'];
+
+            // Add new fields to form (Price and Active payment).
+            $form['payment'] = array(
+              '#type' => 'fieldset',
+              '#title' => t('Payment settings'),
+              '#weight' => 5,
+              '#collapsible' => TRUE,
+              '#collapsed' => FALSE,
+              '#weight' => 80,
+              '#prefix' => '<div id="view-itp-processor-form-edit">',
+              '#suffix' => '</div>',
+            );
+            $form['payment']['itp_payment_price'] = array(
+              '#type' => 'textfield',
+              '#title' => t('Price product'),
+              '#description' => t('Enter the price in USD (for example 7.50)'),
+              '#default_value' => $price,
+              '#size' => 30,
+              '#maxlength' => 20,
+              '#field_prefix' => '<b>$</b>',
+            );
+            $form['payment']['itp_payment_active'] = array(
+              '#type' => 'checkbox',
+              '#title' => t('Active payment'),
+              '#description' => t('Select status on or off payment'),
+              '#default_value' => $active,
+            );
+            // Add new callback.
+            $form['#submit'][] = 'itp_payment_save_data_new_fields_submit';
+            $add_fields[$value->idp] = TRUE;
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Save or Update data from new fields (Price and Active payment).
+ *
+ * @param $form
+ * @param $form_state
+ */
+function itp_payment_save_data_new_fields_submit(&$form, &$form_state) {
+  if (!empty($form['payment']['itp_payment_price']['#value'])) {
+    $price = (float) $form['payment']['itp_payment_price']['#value'];
+    if (is_numeric($price)) {
+      $active = $form['payment']['itp_payment_active']['#value'];
+      $nid = $form['nid']['#value'];
+      // Update or insert data to table price.
+      db_merge('itp_payment_price')
+        ->insertFields(array(
+          'nid' => $nid,
+          'price' => $price,
+          'active' => $active,
+        ))
+        ->updateFields(array(
+          'price' => $price,
+          'active' => $active,
+        ))
+        ->key(array('nid' => $nid))
+        ->execute();
+    }
+  }
+}
+
+/**
+ * Get data from table Price.
+ *
+ * @param $nid integer ID node
+ *
+ * @return array with price and active status
+ */
+function itp_payment_get_price($nid, $price_default) {
+  $query = db_select('itp_payment_price', 'p')
+    ->fields('p', array('price', 'active'))
+    ->condition('p.nid', $nid)
+    ->execute()->fetchObject();
+  // If exist entry in table.
+  if ($query) {
+    $data['price'] = $query->price;
+    $data['active'] = $query->active;
+    return $data;
+  }
+  else {
+    // If in base not entry - default Active = 0.
+    $data['price'] = $price_default;
+    $data['active'] = 0;
+    return $data;
+  }
+}
+
+/**
+ * Show information about payment.
+ *
+ * @param $idi integer id information text
+ *
+ * @return string
+ */
+function itp_payment_show_info_text($idi, $js = NULL) {
+
+  // Get from base info text.
+  $info = new ItpPaymentController();
+  $info_text = $info->GetInfoText($idi);
+
+  // Fall back if $js is not set.
+  if (!$js) {
+    return $info_text;
+  }
+
+  ctools_include('modal');
+  ctools_include('ajax');
+
+  // Close link.
+  $close = '<div id="close-dialog-box">' . l(t('Close'), '#',
+      array(
+        'attributes' => array(
+          'class' => 'ctools-close-modal',
+        ),
+        'external' => TRUE
+      )
+    ) . '</div>';
+
+  // Output simple HTML text.
+  ctools_modal_render(t('Information about payment'), $info_text);
+}

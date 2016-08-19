@@ -1,0 +1,531 @@
+# $Id$
+#
+# Russian translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  itp_payment_controller.php: n/a
+#  itp_payment.module: n/a
+#  itp_payment.admin.inc: n/a
+#  itp_payment.report.inc: n/a
+#  itp_payment.install: n/a
+#  itp_payment.info: n/a
+#  processors/liqpay/liqpay_controller.php: n/a
+#  processors/paypal/paypal_controller.php: n/a
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2015-12-15 13:18+0200\n"
+"PO-Revision-Date: 2015-12-15 13:18+0200\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Russian <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=((((n%10)==1)&&((n%100)!=11))?(0):(((((n%10)>=2)&&((n%10)<=4))&&(((n%100)<10)||((n%100)>=20)))?(1):2));\n"
+
+#: itp_payment_controller.php:247
+msgid "Info"
+msgstr "Инфо"
+
+#: itp_payment_controller.php:248 itp_payment.module:95;532
+msgid "Information about payment"
+msgstr "Информация о платеже"
+
+#: itp_payment.admin.inc:118;677
+msgid "Install file don't found!"
+msgstr "Инсталлируемый файл не найден!"
+
+#: itp_payment.admin.inc:152;153
+msgid "ID payment"
+msgstr "ID платежа"
+
+#: itp_payment.admin.inc:163
+msgid "Name payment"
+msgstr "Название платежа"
+
+#: itp_payment.admin.inc:164
+msgid "Name for tab payment"
+msgstr "Имя вкладки платежа"
+
+#: itp_payment.admin.inc:174
+msgid "Content type"
+msgstr "Тип материала"
+
+#: itp_payment.admin.inc:178
+msgid "Where you want get payments"
+msgstr "Где вы хотите получать платежи"
+
+#: itp_payment.admin.inc:184
+msgid "Type payment"
+msgstr "Тип платежа"
+
+#: itp_payment.admin.inc:188
+msgid "How type payments you want use"
+msgstr "Какой тип платежа вы хотите использовать"
+
+#: itp_payment.admin.inc:194
+msgid "Active period"
+msgstr "Активировать период"
+
+#: itp_payment.admin.inc:195
+msgid "Period for products"
+msgstr "Период для товаров"
+
+#: itp_payment.admin.inc:202
+msgid "Default amount"
+msgstr "Сумма по умолчанию"
+
+#: itp_payment.admin.inc:203
+msgid "Amount payment in the USD"
+msgstr "Сумма платежа в USD"
+
+#: itp_payment.admin.inc:212 itp_payment.report.inc:29;329
+msgid "Payer"
+msgstr "Плательщик"
+
+#: itp_payment.admin.inc:216
+msgid "Who will be payer"
+msgstr "Кто будет плательщиком"
+
+#: itp_payment.admin.inc:222 itp_payment.report.inc:21;322
+msgid "User"
+msgstr "Пользователь"
+
+#: itp_payment.admin.inc:223
+msgid "User name or e-mail"
+msgstr "Имя пользователя или e-mail"
+
+#: itp_payment.admin.inc:232
+msgid "Ver. processor"
+msgstr "Вер. процессора"
+
+#: itp_payment.admin.inc:233
+msgid "Version"
+msgstr "Версия"
+
+#: itp_payment.admin.inc:242
+msgid "Password"
+msgstr "Пароль"
+
+#: itp_payment.admin.inc:243
+msgid "User password"
+msgstr "Пароль пользователя"
+
+#: itp_payment.admin.inc:252
+msgid "Signature (Private key)"
+msgstr "Сигнатура (Приватный ключ)"
+
+#: itp_payment.admin.inc:253
+msgid "Signature for payment"
+msgstr "Сигнатура для платежа"
+
+#: itp_payment.admin.inc:262
+msgid "Merchant ID (Public key)"
+msgstr "Мерчант ID (Публичный ключ)"
+
+#: itp_payment.admin.inc:263
+msgid "Merchant ID for payment"
+msgstr "Мерчант ID для платежа"
+
+#: itp_payment.admin.inc:272
+msgid "Site URL"
+msgstr "URL сайта"
+
+#: itp_payment.admin.inc:273
+msgid "Link on a site payment processor"
+msgstr "Ссылка на сайт платежного процессора"
+
+#: itp_payment.admin.inc:282
+msgid "Site test sandbox URL"
+msgstr "Ссылка на сайт песочницы"
+
+#: itp_payment.admin.inc:283
+msgid "Link on a site payment processor for test"
+msgstr "Ссылка на сайт платежного процессора для тестирования"
+
+#: itp_payment.admin.inc:292
+msgid "Active sandbox"
+msgstr "Активация песочницы"
+
+#: itp_payment.admin.inc:293
+msgid "Active sandbox for test"
+msgstr "Активация песочницы для тестирования"
+
+#: itp_payment.admin.inc:300;556 itp_payment.module:431
+msgid "Active payment"
+msgstr "Активный платеж"
+
+#: itp_payment.admin.inc:301 itp_payment.module:432
+msgid "Select status on or off payment"
+msgstr "Выберите статус включить или выключить платеж"
+
+#: itp_payment.admin.inc:310
+msgid "Add new payment"
+msgstr "Добавить новый платеж"
+
+#: itp_payment.admin.inc:320
+msgid "Edit payment"
+msgstr "Изменить платеж"
+
+#: itp_payment.admin.inc:328
+msgid "Delete payment"
+msgstr "Удалить платеж"
+
+#: itp_payment.admin.inc:372
+msgid "Payment created."
+msgstr "Платеж создан."
+
+#: itp_payment.admin.inc:375
+msgid "Payment not created!"
+msgstr "Платеж не создан!"
+
+#: itp_payment.admin.inc:414
+msgid "Payment updated."
+msgstr "Платеж изменен."
+
+#: itp_payment.admin.inc:417
+msgid "Payment not updated!"
+msgstr "Платеж не изменен!"
+
+#: itp_payment.admin.inc:435
+msgid "Payment deleted."
+msgstr "Платеж удален."
+
+#: itp_payment.admin.inc:438
+msgid "Payment not deleted!"
+msgstr "Платеж не удален!"
+
+#: itp_payment.admin.inc:472
+msgid "Enabled"
+msgstr "Включен"
+
+#: itp_payment.admin.inc:478
+msgid "ID processor"
+msgstr "ID процессора"
+
+#: itp_payment.admin.inc:487
+msgid "Name processor"
+msgstr "Имя процессора"
+
+#: itp_payment.admin.inc:496
+msgid "Title processor"
+msgstr "Название процессора"
+
+#: itp_payment.admin.inc:506
+msgid "Controller processor"
+msgstr "Контроллер процессора"
+
+#: itp_payment.admin.inc:515
+msgid "Callback URL"
+msgstr "URL функции вызова"
+
+#: itp_payment.admin.inc:525
+msgid "Callback URL Thanks"
+msgstr "URL функции вызова благодарности"
+
+#: itp_payment.admin.inc:535;762;893
+msgid "Save"
+msgstr "Сохранить"
+
+#: itp_payment.admin.inc:543 itp_payment.report.inc:131
+msgid "Delete"
+msgstr "Удалить"
+
+#: itp_payment.admin.inc:594
+msgid "New Payment"
+msgstr "Новый Платеж"
+
+#: itp_payment.admin.inc:598
+msgid "My payment for "
+msgstr "Мой платеж для "
+
+#: itp_payment.admin.inc:636
+msgid "Enable processor"
+msgstr "Включить процессор"
+
+#: itp_payment.admin.inc:670
+msgid "Payment processor created."
+msgstr "Платежный процессор создан."
+
+#: itp_payment.admin.inc:673
+msgid "Payment processor not created!"
+msgstr "Платежный процессор не создан!"
+
+#: itp_payment.admin.inc:696
+msgid "Payment processor updated."
+msgstr "Платежный процессор обновлен."
+
+#: itp_payment.admin.inc:699
+msgid "Payment processor not updated!"
+msgstr "Платежный процессор не обновлен!"
+
+#: itp_payment.admin.inc:720
+msgid "Payment processor deleted."
+msgstr "Платежный процессор удален."
+
+#: itp_payment.admin.inc:723
+msgid "Payment processor not deleted!"
+msgstr "Платежный процессор не удален!"
+
+#: itp_payment.admin.inc:744 itp_payment.module:77
+msgid "Thanks text"
+msgstr "Текст благодарности"
+
+#: itp_payment.admin.inc:745
+msgid "Enter the thanks text."
+msgstr "Введите текст благодарности."
+
+#: itp_payment.admin.inc:751;879
+msgid "Available Tokens List"
+msgstr "Доступный список токенов"
+
+#: itp_payment.admin.inc:783
+msgid "Thanks text successful updated."
+msgstr "Текст благодарности успешно обновлен."
+
+#: itp_payment.admin.inc:786
+msgid "Thanks text not updated!"
+msgstr "Текст благодарности не обновлен!"
+
+#: itp_payment.admin.inc:862
+msgid "Information for user"
+msgstr "Информация для пользователя"
+
+#: itp_payment.admin.inc:863
+msgid "Enter info text (assign payment)"
+msgstr "Введите информационный текст (назначение платежа)"
+
+#: itp_payment.admin.inc:924
+msgid "Text info updated."
+msgstr "Информационный текст обновлен."
+
+#: itp_payment.report.inc:18;319
+msgid "№ Payment"
+msgstr "№ Платежа"
+
+#: itp_payment.report.inc:19;320
+msgid "ID in system"
+msgstr "ID в системе"
+
+#: itp_payment.report.inc:20;321
+msgid "Date"
+msgstr "Дата"
+
+#: itp_payment.report.inc:22;323
+msgid "Product"
+msgstr "Товар"
+
+#: itp_payment.report.inc:23;324
+msgid "Amount"
+msgstr "Сумма"
+
+#: itp_payment.report.inc:24;325
+msgid "Period"
+msgstr "Период"
+
+#: itp_payment.report.inc:25;326
+msgid "Status"
+msgstr "Статус"
+
+#: itp_payment.report.inc:26
+msgid "Processor"
+msgstr "Процессор"
+
+#: itp_payment.report.inc:27;327
+msgid "Payment name"
+msgstr "Название платежа"
+
+#: itp_payment.report.inc:28;328
+msgid "Active now"
+msgstr "Активен"
+
+#: itp_payment.report.inc:30;176
+msgid "Change status"
+msgstr "Изменить статус"
+
+#: itp_payment.report.inc:31
+msgid "Delete order"
+msgstr "Удалить заказ"
+
+#: itp_payment.report.inc:52;337
+msgid "Unlimited"
+msgstr "Не ограничено"
+
+#: itp_payment.report.inc:53;60;338;346
+msgid "Yes"
+msgstr "Да"
+
+#: itp_payment.report.inc:53;60;63;338;346;349
+msgid "No"
+msgstr "Нет"
+
+#: itp_payment.report.inc:56;341
+msgid "days"
+msgstr "дней"
+
+#: itp_payment.report.inc:111
+msgid "List of those who made ​​a payment:"
+msgstr "Список тех, кто сделал платеж:"
+
+#: itp_payment.report.inc:156
+msgid "Order deleted."
+msgstr "Заказ удален."
+
+#: itp_payment.report.inc:159
+msgid "Order not deleted!"
+msgstr "Заказ не удален!"
+
+#: itp_payment.report.inc:210;223
+msgid "Payment status changed."
+msgstr "Статус платежа изменен."
+
+#: itp_payment.report.inc:213;226
+msgid "Payment status don't changed!"
+msgstr "Статус платежа не изменен!"
+
+#: itp_payment.report.inc:245
+msgid "begin date"
+msgstr "дата начала"
+
+#: itp_payment.report.inc:246
+msgid "Enter begin date payment"
+msgstr "Введите начальную дату платежа"
+
+#: itp_payment.report.inc:254
+msgid "end date"
+msgstr "дата окончания"
+
+#: itp_payment.report.inc:255
+msgid "Enter end date payment"
+msgstr "Введите конечную дату платежа"
+
+#: itp_payment.report.inc:270
+msgid "CSV Export"
+msgstr "CSV Экспорт"
+
+#: itp_payment.module:16
+msgid "Module for create payment via different payment processors. Developer Danilevsky Kirill http://best-house.org"
+msgstr "Модуль для создания платежей через различные платежные процессоры. Разработчик Данилевский Кирилл http://best-house.org"
+
+#: itp_payment.module:27
+msgid "Payment admin"
+msgstr "Платеж админ"
+
+#: itp_payment.module:28
+msgid "Permission for control of the payment processors"
+msgstr "Права для управления платежными процессорами"
+
+#: itp_payment.module:41
+msgid "Payment processors"
+msgstr "Платежные процессоры"
+
+#: itp_payment.module:42;52
+msgid "Edit settings for different payment processors"
+msgstr "Изменить настройки для различных платежных процессоров"
+
+#: itp_payment.module:51
+msgid "Settings"
+msgstr "Настройки"
+
+#: itp_payment.module:69
+msgid "Report payments"
+msgstr "Отчет по платежам"
+
+#: itp_payment.module:70
+msgid "Information about payments"
+msgstr "Информация о платежах"
+
+#: itp_payment.module:78
+msgid "Edit thanks text"
+msgstr "Изменить текст благодарности"
+
+#: itp_payment.module:86
+msgid "Info text"
+msgstr "Информационный текст"
+
+#: itp_payment.module:87
+msgid "Edit info text"
+msgstr "Изменить информационный текст"
+
+#: itp_payment.module:132;522
+msgid "Close"
+msgstr "Закрыть"
+
+#: itp_payment.module:382 itp_payment.install:341
+msgid "Thank you for your payment."
+msgstr "Благодарим вас за ваш платеж."
+
+#: itp_payment.module:412
+msgid "Payment settings"
+msgstr "Настройки платежа"
+
+#: itp_payment.module:422
+msgid "Price product"
+msgstr "Цена товара"
+
+#: itp_payment.module:423
+msgid "Enter the price in USD (for example 7.50)"
+msgstr "Введите цену товара в USD (например, 7.50)"
+
+#: itp_payment.info:0
+msgid "ITP payment processors"
+msgstr "ITP платежные процессоры"
+
+#: itp_payment.info:0
+msgid "Module for create any payment on the site (Danilevsky Kirill, http://best-house.org)"
+msgstr "Модуль для создания любых платежей на сайте (Данилевский Кирилл, http://best-house.org)"
+
+#: itp_payment.info:0
+msgid "ITP Payment"
+msgstr ""
+
+#: processors/liqpay/liqpay_controller.php:90;109 processors/paypal/paypal_controller.php:102;121
+msgid "Price:"
+msgstr "Цена:"
+
+#: processors/liqpay/liqpay_controller.php:112 processors/paypal/paypal_controller.php:124
+msgid "per day"
+msgstr "за день"
+
+#: processors/liqpay/liqpay_controller.php:119 processors/paypal/paypal_controller.php:131
+msgid "Select days:"
+msgstr "Выберите дни:"
+
+#: processors/liqpay/liqpay_controller.php:120 processors/paypal/paypal_controller.php:132
+msgid "7 days"
+msgstr "7 дней"
+
+#: processors/liqpay/liqpay_controller.php:121 processors/paypal/paypal_controller.php:133
+msgid "14 days"
+msgstr "14 дней"
+
+#: processors/liqpay/liqpay_controller.php:122 processors/paypal/paypal_controller.php:134
+msgid "30 days"
+msgstr "30 дней"
+
+#: processors/liqpay/liqpay_controller.php:123 processors/paypal/paypal_controller.php:135
+msgid "60 days"
+msgstr "60 дней"
+
+#: processors/liqpay/liqpay_controller.php:124 processors/paypal/paypal_controller.php:136
+msgid "120 days"
+msgstr "120 дней"
+
+#: processors/liqpay/liqpay_controller.php:125 processors/paypal/paypal_controller.php:137
+msgid "240 days"
+msgstr "240 дней"
+
+#: processors/liqpay/liqpay_controller.php:126 processors/paypal/paypal_controller.php:138
+msgid "360 days"
+msgstr "360 дней"
+
+#: processors/liqpay/liqpay_controller.php:130 processors/paypal/paypal_controller.php:142
+msgid "Total:"
+msgstr "Всего:"
+
+#: processors/paypal/paypal_controller.php:193
+msgid "Error payment. Please contact Administration."
+msgstr "Ошибка оплаты. Пожалуйста, свяжитесь с Администрацией."
+

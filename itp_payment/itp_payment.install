@@ -1,0 +1,350 @@
+<?php
+/**
+ *  Create tables for payment module.
+ */
+
+/**
+ * Implementation of hook_schema().
+ */
+function itp_payment_schema() {
+  $schema['itp_payment_processors'] = array(
+    'description' => 'Table for keeping payment processors',
+    'fields' => array(
+      'idp' => array(
+        'description' => 'id payment processor',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'name_processor' => array(
+        'description' => 'Name payment processor (directory name)',
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'title' => array(
+        'description' => 'Short description payment processor',
+        'type' => 'varchar',
+        'length' => 100,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'controller' => array(
+        'description' => 'Name controller Class',
+        'type' => 'varchar',
+        'length' => 100,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'callback_url' => array(
+        'description' => 'Link on the site where will comeback payment processor',
+        'type' => 'varchar',
+        'length' => 100,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'callback_url_thanks' => array(
+        'description' => 'Link on the site where will comeback user after payment',
+        'type' => 'varchar',
+        'length' => 100,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+    ),
+    'primary key' => array('idp'),
+  );
+  $schema['itp_payment_processors_settings'] = array(
+    'description' => 'Table for keeping settings payment processors',
+    'fields' => array(
+      'ids' => array(
+        'description' => 'id payment settings',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'idp' => array(
+        'description' => 'id payment processor',
+        'type' => 'int',
+        'length' => 9,
+        'not null' => TRUE,
+      ),
+      'name_pay' => array(
+        'description' => 'Name of the type of payment (for horizontal tabs)',
+        'type' => 'varchar',
+        'length' => 100,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'content_type' => array(
+        'description' => 'Content type where will be payment',
+        'type' => 'varchar',
+        'length' => 100,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'pay_type' => array(
+        'description' => 'Type of payment for different processors',
+        'type' => 'varchar',
+        'length' => 100,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'period' => array(
+        'description' => 'Period payment for a product. If null - not use period.',
+        'type' => 'int',
+        'length' => 1,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'amount' => array(
+        'description' => 'Amount payment',
+        'type' => 'numeric',
+        'precision' => 10,
+        'scale' => 2,
+        'decimal' => '.',
+        'not null' => TRUE,
+        'default' => 0
+      ),
+      'payer' => array(
+        'description' => 'Who will be payer',
+        'type' => 'varchar',
+        'length' => 20,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'user' => array(
+        'description' => 'User name (login) of payment for different processors',
+        'type' => 'varchar',
+        'length' => 100,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'version' => array(
+        'description' => 'Version of payment for different processors',
+        'type' => 'varchar',
+        'length' => 100,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'password' => array(
+        'description' => 'Password of payment for different processors',
+        'type' => 'varchar',
+        'length' => 100,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'signature' => array(
+        'description' => 'Signature of payment for different processors',
+        'type' => 'varchar',
+        'length' => 100,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'merchant_id' => array(
+        'description' => 'Merchant ID of payment for different processors',
+        'type' => 'varchar',
+        'length' => 100,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'site_url' => array(
+        'description' => 'Link on the site where will sent request for payment',
+        'type' => 'varchar',
+        'length' => 100,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'sandbox_url' => array(
+        'description' => 'Link on the site where will sent request for test the system',
+        'type' => 'varchar',
+        'length' => 100,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'sandbox_active' => array(
+        'description' => 'Active item for test payment.',
+        'type' => 'int',
+        'length' => 1,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'active' => array(
+        'description' => 'Activation of payment',
+        'type' => 'int',
+        'length' => 1,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('ids'),
+  );
+
+  $schema['itp_payment_report'] = array(
+    'description' => 'Table for keeping people',
+    'fields' => array(
+      'idr' => array(
+        'description' => 'id report',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'ind_system' => array(
+        'description' => 'ID payment system on the site payment processor',
+        'type' => 'varchar',
+        'length' => 60,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'ids' => array(
+        'description' => 'ID payment',
+        'type' => 'int',
+        'length' => 10,
+        'not null' => TRUE,
+      ),
+      'uid' => array(
+        'description' => 'ID user',
+        'type' => 'int',
+        'length' => 10,
+        'not null' => TRUE,
+      ),
+      'nid' => array(
+        'description' => 'ID node',
+        'type' => 'int',
+        'length' => 10,
+        'not null' => TRUE,
+      ),
+      'amount' => array(
+        'description' => 'Amount payment',
+        'type' => 'numeric',
+        'precision' => 10,
+        'scale' => 2,
+        'decimal' => '.',
+        'not null' => TRUE,
+        'default' => 0
+      ),
+      'status' => array(
+        'description' => 'Status payment',
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'date' => array(
+        'description' => 'Date payment',
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+      ),
+      'period' => array(
+        'description' => 'Period payment (if exist)',
+        'type' => 'int',
+        'length' => 8,
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('idr'),
+  );
+
+  $schema['itp_payment_thanks'] = array(
+    'description' => 'Table for keeping thanks text',
+    'fields' => array(
+      'idt' => array(
+        'description' => 'id text',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'text_thanks' => array(
+        'description' => 'Thanks text after pay',
+        'type' => 'text',
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('idt'),
+  );
+
+  $schema['itp_payment_info'] = array(
+    'description' => 'Table for keeping information about payment',
+    'fields' => array(
+      'idi' => array(
+        'description' => 'id info',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'ids' => array(
+        'description' => 'ID payment',
+        'type' => 'int',
+        'length' => 10,
+        'not null' => TRUE,
+      ),
+      'text_info' => array(
+        'description' => 'Information text assign of payment',
+        'type' => 'text',
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('idi'),
+  );
+
+  $schema['itp_payment_price'] = array(
+    'description' => 'Table for keeping price for node',
+    'fields' => array(
+      'nid' => array(
+        'description' => 'id node',
+        'type' => 'int',
+        'length' => 20,
+        'not null' => TRUE,
+      ),
+      'price' => array(
+        'description' => 'Price for node',
+        'type' => 'numeric',
+        'precision' => 10,
+        'scale' => 2,
+        'decimal' => '.',
+        'not null' => TRUE,
+        'default' => 0
+      ),
+      'active' => array(
+        'description' => 'Activation payment for node',
+        'type' => 'int',
+        'length' => 1,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'unique keys' => array(
+      'nid' => array('nid'),
+    ),
+    'primary key' => array('nid'),
+  );
+  return $schema;
+}
+
+/**
+ * Create new table information about payment.
+ */
+function itp_payment_update_7000() {
+  if (!db_table_exists('itp_payment_info')) {
+    db_create_table('itp_payment_info', drupal_get_schema_unprocessed('itp_payment', 'itp_payment_info'));
+    return 'Add the itp_payment_info table for the itp_payment module.';
+  }
+}
+
+/**
+ * Implementation of hook_install().
+ */
+function itp_payment_install() {
+  // Insert default text thanks.
+  $idt = db_insert('itp_payment_thanks')
+    ->fields(array('text_thanks' => t('Thank you for your payment.')))
+    ->execute();
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function itp_payment_uninstall() {
+  drupal_uninstall_schema('itp_payment');
+}
