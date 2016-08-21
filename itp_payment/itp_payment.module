@@ -259,6 +259,7 @@ function itp_payment_include_processor_form($nid, $node_author, $value) {
           $payment->CheckSubmitButton($_POST['itp_payment_method'], $days);
         }
 
+        // Show payment form.
         if (!empty($form_processor)) {
           return array(
             '#markup' => $form_processor,

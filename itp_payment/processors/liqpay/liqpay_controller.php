@@ -162,28 +162,34 @@ class LiqPay_Controller extends ItpPaymentController {
         $data = base64_encode($json);
         $signature = base64_encode(sha1($private_key . $data . $private_key, 1));
 
-        // Create form and submit form.
-        print '<script>(function ($) {
-             var form = $(document.createElement("form"));
-              $(form).attr("action", "' . $this->site_url . '");
-              $(form).attr("method", "POST");
+        drupal_add_js('(function ($) {
+                     var form = $(document.createElement("form"));
+                      $(form).attr("action", "' . $this->site_url . '");
+                      $(form).attr("method", "POST");
 
-              var input = $("<input>")
-                  .attr("type", "hidden")
-                  .attr("name", "data")
-                  .val("' . $data . '" );
+                      var input = $("<input>")
+                          .attr("type", "hidden")
+                          .attr("name", "data")
+                          .val("' . $data . '" );
 
-              var input1 = $("<input>")
-                  .attr("type", "hidden")
-                  .attr("name", "signature")
-                  .val("' . $signature . '" );
+                      var input1 = $("<input>")
+                          .attr("type", "hidden")
+                          .attr("name", "signature")
+                          .val("' . $signature . '" );
 
-              $(form).append($(input));
-              $(form).append($(input1));
+                      $(form).append($(input));
+                      $(form).append($(input1));
 
-              form.appendTo(document.body)
-              $(form).submit();
-        })(jQuery);</script>';
+                      form.appendTo(document.body)
+                      $(form).submit();
+                })(jQuery);',
+          [
+            'type' => 'inline',
+            'scope' => 'footer',
+            'weight' => 5,
+            'cache' => FALSE
+          ]);
+
         break;
     }
   }
@@ -231,10 +237,12 @@ class LiqPay_Controller extends ItpPaymentController {
     // Create new order entry in a Report Table.
     $this->order_id = $this->AddUserToReportTable($days);
 
-    $title = node_load($this->nid)->title;
+    //$title = node_load($this->nid)->title;
+
     $item = array(
       'order_id' => $this->order_id,
     );
+
     $params = $requestParams + $orderParams + $item;
 
     return $params;

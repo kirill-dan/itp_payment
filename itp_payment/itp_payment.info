@@ -1,6 +1,6 @@
 name = ITP payment processors
 description = Module for create any payment on the site (Danilevsky Kirill, http://best-house.org)
 core = 7.x
-version = 1.4
+version = 1.5
 files[]= itp_payment_controller.php
 package = ITP Payment

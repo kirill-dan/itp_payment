@@ -134,6 +134,7 @@ class ItpPaymentController {
       'status' => $status,
       'date' => time(),
     );
+
     $order_id = db_insert('itp_payment_report')
       ->fields($data_report)
       ->execute();
